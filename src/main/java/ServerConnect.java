@@ -5,13 +5,13 @@ import org.apache.commons.vfs2.VFS;
 import java.io.IOException;
 
 public class ServerConnect {
+    private static FileMonitor fileMonitor;
+
+    public static FileMonitor getFileMonitor(){
+        return fileMonitor;
+    }
 
     public static void main(String[] args) throws IOException {
-        FileSystemManager manager = VFS.getManager();
-        FileObject file = manager.resolveFile("\\\\asustor2.cs.uct.ac.za\\inethi_logs");
-        FileObject[] children = file.getChildren();
-        Analyzer analyzer = new Analyzer(children);
-        Thread th = new Thread(analyzer);
-        th.run();
+        fileMonitor  = new FileMonitor("\\\\asustor2.cs.uct.ac.za\\inethi_logs");
 }
 }

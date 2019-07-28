@@ -3,32 +3,30 @@ import io.pkts.Pcap;
 import org.apache.commons.vfs2.FileObject;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Set;
 
-public class Analyzer  implements Runnable{
+public class Analyzer implements Runnable {
+    PacketHandler handler;
 
-    private FileObject[] pcapFiles;
-    private PacketHandler handler;
-
-    Analyzer(FileObject[] pf){
-        pcapFiles = pf;
+    public Analyzer() {
         handler = new PacketHandlerImp();
     }
 
     @Override
     public void run() {
-        for(FileObject f: pcapFiles){
+        Set<FileObject> pcapFiles = ServerConnect.getFileMonitor().getCreatedFiles();
+        for (FileObject f : pcapFiles) {
             try {
-                if(!f.getName().getFriendlyURI().endsWith(".small")) {
-                    processPcapFile(Pcap.openStream(f.getContent().getInputStream()));
-                }
+                processPcapFile(Pcap.openStream(f.getContent().getInputStream()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println(((PacketHandlerImp)handler).getTopTenDest());
+        System.out.println(((PacketHandlerImp) handler).getTopTenDest());
     }
 
-    private void processPcapFile(Pcap pcap){
+    private void processPcapFile(Pcap pcap) {
         try {
             pcap.loop(handler);
         } catch (IOException e) {
