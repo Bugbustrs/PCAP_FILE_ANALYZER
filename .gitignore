@@ -14,7 +14,7 @@
 .idea/**/shelf
 
 # Generated files
-.idea/**/contentModel.xml
+*/.idea/**/contentModel.xml
 
 # Sensitive or high-churn files
 .idea/**/dataSources/
@@ -120,4 +120,6 @@ buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
 
+
+./ppcaplanalyzer/*
 # End of https://www.gitignore.io/api/java,maven,intellij
