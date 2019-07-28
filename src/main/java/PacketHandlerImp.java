@@ -12,13 +12,12 @@ public class PacketHandlerImp implements PacketHandler {
      * We are only worried about tcp data from the packets for now so the below are to keep track of the tcp addresses.
      */
     private HashMap<String, Integer> srcAddress, destAddress;//, tcpProtocol;
-    private HashSet<Packet> seenParentPackets;
 
-    public PacketHandlerImp() {
+    PacketHandlerImp() {
         this(true);
     }
 
-    public PacketHandlerImp(boolean h) {
+    private PacketHandlerImp(boolean h) {
         this.handlesAllPackets = h;
         srcAddress = new HashMap<>();
         destAddress = new HashMap<>();
@@ -45,7 +44,7 @@ public class PacketHandlerImp implements PacketHandler {
     }
 
 
-    public List<String> getTopTenDest() {
+    List<String> getTopTenDest() {
         List<Map.Entry<String, Integer>> list = new ArrayList<>(destAddress.entrySet());
         list.sort(Map.Entry.comparingByValue());
 

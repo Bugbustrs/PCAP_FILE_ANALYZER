@@ -1,11 +1,7 @@
 import io.pkts.PacketHandler;
 import io.pkts.Pcap;
-import io.pkts.packet.Packet;
-import io.pkts.packet.UDPPacket;
-import io.pkts.protocol.Protocol;
 import org.apache.commons.vfs2.FileObject;
 
-import java.io.File;
 import java.io.IOException;
 
 public class Analyzer  implements Runnable{
@@ -13,7 +9,7 @@ public class Analyzer  implements Runnable{
     private FileObject[] pcapFiles;
     private PacketHandler handler;
 
-    public Analyzer(FileObject[] pf){
+    Analyzer(FileObject[] pf){
         pcapFiles = pf;
         handler = new PacketHandlerImp();
     }
