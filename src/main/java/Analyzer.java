@@ -3,19 +3,24 @@ import io.pkts.Pcap;
 import org.apache.commons.vfs2.FileObject;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 
 public class Analyzer implements Runnable {
-    PacketHandler handler;
+    private PacketHandler handler;
+    private FileMonitor monitor;
 
-    public Analyzer() {
+    public Analyzer(FileMonitor monitor) {
         handler = new PacketHandlerImp();
+        this.monitor = monitor;
+    }
+
+    public Analyzer(){
+        this(new FileMonitor(Config.HOST_NAME));
     }
 
     @Override
     public void run() {
-        Set<FileObject> pcapFiles = ServerConnect.getFileMonitor().getCreatedFiles();
+        Set<FileObject> pcapFiles = monitor.getCreatedFiles();
         for (FileObject f : pcapFiles) {
             try {
                 processPcapFile(Pcap.openStream(f.getContent().getInputStream()));
@@ -23,7 +28,7 @@ public class Analyzer implements Runnable {
                 e.printStackTrace();
             }
         }
-        System.out.println(((PacketHandlerImp) handler).getTopTenDest());
+        monitor.doneProcessing();
     }
 
     private void processPcapFile(Pcap pcap) {
