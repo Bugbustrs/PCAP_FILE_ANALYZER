@@ -60,4 +60,10 @@ public class PacketHandlerImp implements PacketHandler {
         return topTen;
     }
 
+    public void clearList(){
+        this.destAddress.clear();
+        this.srcAddress.clear();
+        this.getTopTenDest();
+    }
+
 }
