@@ -16,7 +16,7 @@ public class FileMonitor {
         this.hostName = hostName;
         this.defaultFileMonitor = new DefaultFileMonitor(new RemoteFileListener());
         this.createdFileObject = new HashSet<>();
-        this.pendingAnalysisFiles = null; //we will sotre the things we are analyzing into this set.
+        this.pendingAnalysisFiles = null; //we will store the things we are analyzing into this set.
     }
 
 
@@ -38,14 +38,6 @@ public class FileMonitor {
         @Override
         public void fileChanged(FileChangeEvent fileChangeEvent) throws Exception {
             //we don't expcet pcap files to change
-            FileObject temp = fileChangeEvent.getFile();
-            synchronized (createdFileObject) {
-                if (createdFileObject.contains(temp)) {
-                    createdFileObject.remove(temp);
-                    createdFileObject.add(temp);
-
-                }
-            }
         }
 
         /***
