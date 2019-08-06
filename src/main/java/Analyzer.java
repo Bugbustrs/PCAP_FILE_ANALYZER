@@ -29,6 +29,7 @@ public class Analyzer implements Runnable {
             }
         }
         monitor.doneProcessing();
+        ((PacketHandlerImp)handler).clearList();
     }
 
     private void processPcapFile(Pcap pcap) {

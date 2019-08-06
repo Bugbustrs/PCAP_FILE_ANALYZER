@@ -38,14 +38,6 @@ public class FileMonitor {
         @Override
         public void fileChanged(FileChangeEvent fileChangeEvent) throws Exception {
             //we don't expcet pcap files to change
-            FileObject temp = fileChangeEvent.getFile();
-            synchronized (createdFileObject) {
-                if (createdFileObject.contains(temp)) {
-                    createdFileObject.remove(temp);
-                    createdFileObject.add(temp);
-
-                }
-            }
         }
 
         /***
