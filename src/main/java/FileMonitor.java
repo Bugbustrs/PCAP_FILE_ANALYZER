@@ -75,17 +75,19 @@ public class FileMonitor {
      */
     public boolean start() {
         int count = 0;
-        while (!connect() && ++count < Config.NUM_RETRY_CONNECT) {//we will attempt to connect three times before we officially stop
+        int max_reconnects = PCAPAnalyzerDriver.CONFIG.getInt("NUM_RETRY_CONNECT");
+        int time_till_reconnect_ms = PCAPAnalyzerDriver.CONFIG.getInt("MILLISECONDS_TILL_RETRY_CONNECT");
+        while (!connect() && ++count < max_reconnects) {//we will attempt to connect three times before we officially stop
             try {
-                Thread.sleep(Config.MILLISECONDS_TILL_RETRY_CONNECT);
+                Thread.sleep(time_till_reconnect_ms);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (count == Config.NUM_RETRY_CONNECT - 1)
+            if (count == max_reconnects - 1)
                 return false;
         }
         defaultFileMonitor.addFile(file);
-        defaultFileMonitor.setDelay(Config.FILE_MONITOR_DELAY);
+        defaultFileMonitor.setDelay(PCAPAnalyzerDriver.CONFIG.getInt("FILE_MONITOR_DELAY"));
         defaultFileMonitor.start();
         return true;
     }

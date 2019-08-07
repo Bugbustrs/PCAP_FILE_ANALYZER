@@ -15,7 +15,7 @@ public class Analyzer implements Runnable {
     }
 
     public Analyzer(){
-        this(new FileMonitor(Config.HOST_NAME));
+        this(new FileMonitor(PCAPAnalyzerDriver.CONFIG.getString("FILE_SERVER_HOSTNAME")));
     }
 
     @Override
