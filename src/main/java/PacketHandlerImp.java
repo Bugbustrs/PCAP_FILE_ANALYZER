@@ -1,3 +1,6 @@
+import Measurements.PcapMeasurements;
+import com.sun.xml.internal.bind.v2.runtime.output.Pcdata;
+import database.DatabaseManager;
 import io.pkts.PacketHandler;
 import io.pkts.packet.IPv4Packet;
 import io.pkts.packet.Packet;
@@ -11,6 +14,7 @@ import java.util.Map;
 
 public class PacketHandlerImp implements PacketHandler {
     private boolean handlesAllPackets;
+    private List<PcapMeasurements> pcapData;
     /**
      * We are only worried about tcp data from the packets for now so the below are to keep track of the tcp addresses.
      */
@@ -18,6 +22,7 @@ public class PacketHandlerImp implements PacketHandler {
 
     PacketHandlerImp() {
         this(true);
+        pcapData = new ArrayList<>();
     }
 
     private PacketHandlerImp(boolean h) {
@@ -35,14 +40,17 @@ public class PacketHandlerImp implements PacketHandler {
 //        if (packet.getParentPacket()!=null&&seenParentPackets.add(packet.getParentPacket())) {//if we can't add the parent then we have seen a packet that has the same information so we can just ignore the packets
         if (packet.hasProtocol(Protocol.IPv4)) {
             IPv4Packet iPv4Packet = (IPv4Packet) packet.getPacket(Protocol.IPv4);
+            long time = iPv4Packet.getArrivalTime();
             String destAdd = iPv4Packet.getDestinationIP();
             String srcIP = iPv4Packet.getSourceIP();
+            pcapData.add(new PcapMeasurements(time, destAdd, srcIP));
             System.out.println("Source: "+srcIP+ "Dest: "+destAdd);
             //now update counts in the hash maps
             this.destAddress.put(destAdd, this.destAddress.getOrDefault(destAdd, 0) + 1);
             this.srcAddress.put(srcIP, this.srcAddress.getOrDefault(srcIP, 0) + 1);
         }
 //        }
+        writeToDB();
         return handlesAllPackets;
     }
 
@@ -60,6 +68,10 @@ public class PacketHandlerImp implements PacketHandler {
         return topTen;
     }
 
+    private void writeToDB(){
+        DatabaseManager.writePcapData(pcapData);
+        pcapData.clear();
+    }
     public void clearList(){
         this.destAddress.clear();
         this.srcAddress.clear();

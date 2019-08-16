@@ -47,6 +47,11 @@
             <version>20180813</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>Database_Server</groupId>
+            <artifactId>QosMon</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>
