@@ -1,5 +1,4 @@
 import Measurements.PcapMeasurements;
-import com.sun.xml.internal.bind.v2.runtime.output.Pcdata;
 import database.DatabaseManager;
 import io.pkts.PacketHandler;
 import io.pkts.packet.IPv4Packet;
